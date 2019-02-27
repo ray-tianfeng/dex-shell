@@ -38,7 +38,7 @@
 
 
         File unApkDir = new File(unPrimaryApkDstPath);
-        ArrayList<File> dexArray = new ArrayList<File>();
+        ArrayList&lt;File&gt dexArray = new ArrayList&lt;File&gt();
         for(File file : unApkDir.listFiles()){//读取解壳后的dex
             if(file.getName().endsWith(".dex")){
                 dexArray.add(file);
@@ -84,9 +84,9 @@
      * @throws NoSuchPaddingException
      * @throws IllegalBlockSizeException
      */
-    private static void shellDex(ArrayList<File> primaryDexs, File unShellDex, String shellDexPath) throws IOException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, NoSuchPaddingException, IllegalBlockSizeException {
+    private static void shellDex(ArrayList&lt;File&gt primaryDexs, File unShellDex, String shellDexPath) throws IOException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, NoSuchPaddingException, IllegalBlockSizeException {
         int primaryDexLen = 0;
-        ArrayList<DexFile> dexFileInfos = new ArrayList<>(primaryDexs.size());
+        ArrayList&lt;DexFile&gt dexFileInfos = new ArrayList&lt;&gt(primaryDexs.size());
         for(File file : primaryDexs){//计算所有primary的长度
             DexFile dexFile = new DexFile(file.getName(),encryptionAES(readFileBytes(file)));
             dexFileInfos.add(dexFile);
@@ -153,9 +153,9 @@
         System.arraycopy(data,shellDexLen-4-dexFileCommentLen,dexFileCommentByte,0,dexFileCommentLen);
         String dexFileComment = new String(dexFileCommentByte);
         LogUtils.d("dex comment:"+dexFileComment);
-        ArrayList<DexFile> dexFileArrayList = (ArrayList<DexFile>) JSON.parseArray(dexFileComment,DexFile.class);
+        ArrayList&lt;DexFile&gt dexFileArrayList = (ArrayList&lt;DexFile&gt) JSON.parseArray(dexFileComment,DexFile.class);
         int currentReadEndIndex = shellDexLen - 4 - dexFileCommentLen;//当前已经读取到的内容的下标
-        for(int i = dexFileArrayList.size()-1; i>=0; i--){//取出所有的dex,并写入到payload_dex目录下
+        for(int i = dexFileArrayList.size()-1; i&gt=0; i--){//取出所有的dex,并写入到payload_dex目录下
             DexFile dexFile = dexFileArrayList.get(i);
             byte[] primaryDexData = new byte[dexFile.getDexLength()];
             System.arraycopy(data,currentReadEndIndex-dexFile.getDexLength(),primaryDexData,0,dexFile.getDexLength());
@@ -197,3 +197,4 @@
 
 解密后的文件依旧存于应用的私有存储空间中，ROOT了的手机和模拟器很容易就可以拿到解密后的dex，所以这种加壳方法只是将代码从apk中隐藏。
 如果有好的解决方法，或者好的加壳方法望告知！
+
